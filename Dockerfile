@@ -7,6 +7,8 @@ RUN set -ex \
             libc-dev    \
             libxslt-dev \
             libxml2-dev \
+            curl-dev \
+            openssl-dev \
     && pip3 install tornado lxml PyRSS2Gen statsd pycurl
 
 EXPOSE 8000
