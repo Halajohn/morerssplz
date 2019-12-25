@@ -37,6 +37,8 @@ class ZhihuAPI:
     headers = {
       'User-Agent': self.user_agent,
       'Authorization': 'oauth c3cef7c66a1843f8b3a9e6a1e3160e20', # hard-coded in js
+      'x-api-version': '3.0.40',
+      'x-udid': 'AMAiMrPqqQ2PTnOxAr5M71LCh-dIQ8kkYvw=',
     }
     res = await fetch_zhihu(url, headers = headers)
     return json.loads(res.body.decode('utf-8'))
@@ -85,7 +87,7 @@ async def activities2rss(name, digest=False, pic=None):
 
   while len(posts) < 20 and page < 3:
     paging = data['paging']
-    logger.debug('paging: %r', paging)
+    # logger.debug('paging: %r', paging)
     if paging['is_end']:
       break
     data = await zhihu_api.get_json(paging['next'])
@@ -134,7 +136,7 @@ def post2rss(post, digest=False, pic=None):
     base.proxify_pic(doc, re_zhihu_img, pic)
   content = tostring(doc, encoding=str)
 
-  pub_date = datetime.datetime.fromtimestamp(t_c)
+  pub_date = datetime.datetime.utcfromtimestamp(t_c)
 
   item = PyRSS2Gen.RSSItem(
     title = title.replace('\x08', ''),
